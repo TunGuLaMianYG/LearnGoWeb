@@ -28,13 +28,15 @@ func main() {
 		fmt.Printf("初始化配置文件失败:%v\n", err)
 		return
 	}
+	fmt.Println(settings.Conf)
+	fmt.Println(settings.Conf.LogConfig == nil)
 	// 2.初始化日志
-	if err := logger.Init(); err != nil {
-		fmt.Printf("初始化日志失败:%v\n", err)
+	if err := logger.Init(settings.Conf.LogConfig); err != nil {
+		fmt.Printf("init logger failed, err:%v\n", err)
 		return
 	}
 	defer zap.L().Sync()
-	zap.L().Debug("初始化日志成功！")
+	zap.L().Debug("logger init success...")
 	// 3.初始化MySQL连接
 	if err := mysql.Init(); err != nil {
 		fmt.Printf("初始化mysql数据库失败:%v\n", err)
